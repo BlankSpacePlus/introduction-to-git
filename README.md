@@ -62,7 +62,7 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 本地做个测试即可，首先需要创建一个本地仓库，我新建一个<code>git_test</code>文件夹，在此目录下使用<code>git init</code>命令可使git_test文件夹含.git文件夹。<br/>
 注意此时新建项目的不能直接新建分支，否则会报错：<code>fatal: Not a valid object name: 'master'.</code>，也就是说必须先commit至少一次才行。<br/>
 先随便放一个文件进去，再依次输入<code>git add .</code>、<code>git commit -m "测试"</code>，完成初次提交。<br/>
-接下来新建分支<code>a_test<code>，命令为<code>git branch a_test</code>。<br/>
+接下来新建分支<code>a_test</code>，命令为<code>git branch a_test</code>。<br/>
 使用命令<code>git branch</code>可查看分支情况：
 ```text
   a_test
