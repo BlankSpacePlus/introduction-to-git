@@ -46,10 +46,10 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 ## 查看提交日志
 <code>git log</code>这个命令我还是试过的，它能打印出你在这个Git目录下的commit记录。<br/>
 如果是Git目录，则可以查看Log：<br/>
-![在这里插入图片描述](https://github.com/ChenYikunReal/git_learning/blob/master/images/IncorrectLog.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzg5NjMxOA==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://github.com/ChenYikunReal/git_learning/blob/master/images/CorrectLog.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzg5NjMxOA==,size_16,color_FFFFFF,t_70)
 <br/>
 如果不是Git目录，则不可以查看Log：<br/>
-![在这里插入图片描述](https://github.com/ChenYikunReal/git_learning/blob/master/images/CorrectLog.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzg5NjMxOA==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://github.com/ChenYikunReal/git_learning/blob/master/images/IncorrectLog.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzg5NjMxOA==,size_16,color_FFFFFF,t_70)
 <br/>
 可以查看本地Git的记录
 
@@ -69,7 +69,11 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 * master
 ```
 <code>master</code>表示主干，<code>a_test</code>则是新建的分支，<code>\*</code>表示当前分支<br/>
-使用命令<code>git checkout a_test</code>即可切换到a_test分支目录下。<br/>
+使用命令<code>git checkout a_test</code>即可切换到a_test分支目录下：
+```text
+* a_test
+  master
+```
 回到主分支，使用命令<code>git checkout -b b_test</code>可以新建b_test分支并切换过去：
 ```text
   a_test
