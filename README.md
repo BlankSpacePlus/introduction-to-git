@@ -69,7 +69,7 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 * master
 ```
 <code>master</code>表示主干，<code>a_test</code>则是新建的分支，<code>\*</code>表示当前分支<br/>
-使用命令<code>git checkout a_test<code>即可切换到a_test分支目录下。<br/>
+使用命令<code>git checkout a_test</code>即可切换到a_test分支目录下。<br/>
 回到主分支，使用命令<code>git checkout -b b_test</code>可以新建b_test分支并切换过去：
 ```text
   a_test
