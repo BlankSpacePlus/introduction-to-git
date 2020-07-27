@@ -84,3 +84,59 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 ```text
 Already up to date.
 ```
+删除分支要分情况：
+- 分支与主干是同步的(如分支建错、已提交同步等)需要删除：<code>git branch -d a_test</code>
+- 分支与主干是不同步的但需要强行删除：<code>git branch -D b_test</code>
+
+## 给代码打上版本Tag
+我们给初代版本打上Tag，表示版本为V1.0：<code>git tag v1.0</code>。
+随着修改，我们提交后给新版本打上V1.1的Tag：<code>git tag v1.1</code>
+如若需要回溯到V1.0版本，需使用命令<code>git checkout v1.0</code>：
+```text
+git checkout v1.0
+Note: switching to 'v1.0'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 025ee41 测试
+
+```
+我们查看log，没有V1.1的log：
+```text
+git log
+commit ......... (HEAD, tag: v1.0)
+Author: ... <...@users.noreply.github.com>
+Date:   Mon Jul 27 18:36:08 2020 +0800
+
+    测试
+
+```
+然后我们返回至V1.1(<code>git checkout v1.1</code>)：
+```text
+git log
+commit ......... (HEAD, tag: v1.1, master)
+Author: ... <...@users.noreply.github.com>
+Date:   Mon Jul 27 18:36:38 2020 +0800
+
+    测试
+
+commit ......... (tag: v1.0)
+Author: ... <...@users.noreply.github.com>
+Date:   Mon Jul 27 18:36:08 2020 +0800
+
+    测试
+
+```
