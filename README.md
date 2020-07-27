@@ -145,13 +145,13 @@ Date:   Mon Jul 27 18:36:08 2020 +0800
 
 ## 查看当前项目所有的远程仓库
 ```text
-git	remote	-v
+git remote -v
 ```
 如果没有远程仓库，则不会有输出。<br/>
 如果有单一远程仓库，则显示如下内容：
 ```text
-origin  https://github.com/username/repository_name (fetch)
-origin  https://github.com/username/repository_name (push)
+origin https://github.com/username/repository_name (fetch)
+origin https://github.com/username/repository_name (push)
 ```
 
 ## 指定远程仓库的用户名和邮箱
@@ -167,7 +167,8 @@ git config user.email "email_address"
 ```
 
 ## 配置相关
-<code>git config -l</code>命令可查配置信息，这个配置文件的位置是Linux的<code>~/.gitconfig</code><br/>
+<code>git config -l</code>命令可查配置信息，这个配置文件的位置是Linux的<code>~/.gitconfig</code>
+
 一些比较经典的配置如下(配置用户名、邮箱这种上面提过了)：
 - <code>git config --global core.editor "vim" # 设置Editor使用vim</code>
 - <code>git config --global color.ui true # 开启终端的各种颜色</code>
@@ -186,8 +187,8 @@ git diff <branch1>..<branch2> # 在两个分支之间比较
 git diff --staged # 比较暂存区和版本库差异
 ```
 直接输入git diff只能比较当前文件和暂存区文件(仍未执行git add的文件)差异。<br/>
-- 查到的改动如果是**红色的"-"**则代表删除的内容。
-- 查到的改动如果是**绿色的"+"**则代表增加的内容。
+- 查到的改动如果是 **红色的"-"** 则代表删除的内容。
+- 查到的改动如果是 **绿色的"+"** 则代表增加的内容。
 
 ## stash的使用
 <code>git stash</code>命令可以把当前分支所有没有commit的代码先暂存起来，此时使用<code>git status</code>查看仓库状态是很干净的。<br/>
@@ -200,3 +201,7 @@ git diff --staged # 比较暂存区和版本库差异
 我们在开发的过程中一般都会约定尽量大家写的代码不要彼此影响，以减少出现冲突的可能，但是冲突总归无法避免的，我们需要了解并掌握解决冲突的方法。<br/>
 冲突的地方由<code>====</code>分出了上下两个部分，上部分一个叫HEAD的字样代表是当前所在分支的代码，下半部分是另一个分支的代码。<br/>
 对比很明显，所以我们很容易判断哪些代码该保留，哪些代码该删除。我们只需要移除掉那些老旧代码，而且同时也要把那些<code>\<\<\<HEAD</code>、<code>====</code>以及<code>\>\>\>\>\>\></code>这些标记符号也一并删除，最后进行一次commit就ok了。
+
+## 新Repository的README.md
+Github、Gitee这些仓库在New一个Repository时都会有新建README.md的选项，而README.md一般是不能缺的，所以开始的时候我都会直接顺手创建。<br/>
+但是后来就出现了很多很多的麻烦，所以现在个人不建议直接创建README.md这东西，本地自己创一个文件写好内容直接push就行。
