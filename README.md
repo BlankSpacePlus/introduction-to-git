@@ -18,6 +18,8 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 1. <code>git add .</code>
 2. <code>git commit -m "注释"</code>
 3. <code>git push -u origin master</code>
+
+(严格讲，在push之前应该pull一下的：<code>git pull origin master</code>)
 ### IDEA(PyCharm、CLion、WebStorm等类似)提交
 1. VCS → Import into Version Control → Create Git Repository...
 2. 选定项目目录点右键 → Git
@@ -140,3 +142,61 @@ Date:   Mon Jul 27 18:36:08 2020 +0800
     测试
 
 ```
+
+## 查看当前项目所有的远程仓库
+```text
+git	remote	-v
+```
+如果没有远程仓库，则不会有输出。<br/>
+如果有单一远程仓库，则显示如下内容：
+```text
+origin  https://github.com/username/repository_name (fetch)
+origin  https://github.com/username/repository_name (push)
+```
+
+## 指定远程仓库的用户名和邮箱
+比较一劳永逸的做法是指定全局的默认用户名和邮箱：
+```text
+git config --global user.name "username"
+git config --global user.email "email_address"
+```
+我们也可以为专属的项目设置默认用户名和邮箱，只需去掉<code>--global</code>即可：
+```text
+git config user.name "username"
+git config user.email "email_address"
+```
+
+## 配置相关
+<code>git config -l</code>命令可查配置信息，这个配置文件的位置是Linux的<code>~/.gitconfig</code><br/>
+一些比较经典的配置如下(配置用户名、邮箱这种上面提过了)：
+- <code>git config --global core.editor "vim" # 设置Editor使用vim</code>
+- <code>git config --global color.ui true # 开启终端的各种颜色</code>
+- <code>git config --global core.quotepath false #设置显示中文文件名</code>
+
+## checkout再说明
+checkout两个主要功能：
+- 切换分支branch
+- 切换版本标签tag
+
+## 查看版本改动
+查看版本改动需要使用<code>git diff</code>命令：
+```text
+git diff <$id1> <$id2> # 比较两次提交之间的差异
+git diff <branch1>..<branch2> # 在两个分支之间比较
+git diff --staged # 比较暂存区和版本库差异
+```
+直接输入git diff只能比较当前文件和暂存区文件(仍未执行git add的文件)差异。<br/>
+- 查到的改动如果是**红色的"-"**则代表删除的内容。
+- 查到的改动如果是**绿色的"+"**则代表增加的内容。
+
+## stash的使用
+<code>git stash</code>命令可以把当前分支所有没有commit的代码先暂存起来，此时使用<code>git status</code>查看仓库状态是很干净的。<br/>
+而输入<code>git stash list</code>可查到一条暂存记录。<br/>
+将暂存记录的还原到原分支中使用的命令是<code>git stash apply</code>，还原后使用命令<code>git stash drop</code>删掉这条暂存记录。<br/>
+<code>git stash pop</code>会帮我们还原+删除stash记录。<br/>
+另说，drop只删一条stash记录，而<code>git stash clear</code>删的是所有stash记录。
+
+## 分支冲突
+我们在开发的过程中一般都会约定尽量大家写的代码不要彼此影响，以减少出现冲突的可能，但是冲突总归无法避免的，我们需要了解并掌握解决冲突的方法。<br/>
+冲突的地方由<code>====</code>分出了上下两个部分，上部分一个叫HEAD的字样代表是当前所在分支的代码，下半部分是另一个分支的代码。<br/>
+对比很明显，所以我们很容易判断哪些代码该保留，哪些代码该删除。我们只需要移除掉那些老旧代码，而且同时也要把那些<code>\<\<\<HEAD</code>、<code>====</code>以及<code>\>\>\>\>\>\></code>这些标记符号也一并删除，最后进行一次commit就ok了。
