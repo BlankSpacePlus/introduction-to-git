@@ -212,3 +212,9 @@ Github、Gitee这些仓库在New一个Repository时都会有新建README.md的�
 git reset --hard HEAD~
 git push -f
 ```
+
+## 强行push到远程仓库
+```shell
+git push -f origin master
+```
+
