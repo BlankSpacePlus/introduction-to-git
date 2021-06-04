@@ -218,3 +218,8 @@ git push -f
 git push -f origin master
 ```
 
+## RPC failed
+Git提交Github报错：`RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errfno 10054`
+
+输入`git config http.sslVerify "false"`即可。
+
