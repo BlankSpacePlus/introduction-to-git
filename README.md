@@ -2,7 +2,11 @@
 
 Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用广泛。
 
-![](images/Github.PNG)
+![](images/git.png)
+
+GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。
+
+![](images/Github.png)
 
 这里会试着分享一些自己学习和使用Git/Github/Gitee的一些经验！
 
@@ -49,10 +53,10 @@ Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用�
 ## 查看提交日志
 `git log`这个命令我还是试过的，它能打印出你在这个Git目录下的commit记录。<br/>
 如果是Git目录，则可以查看Log：<br/>
-![](images/CorrectLog.PNG)
+![](images/CorrectLog.png)
 <br/>
 如果不是Git目录，则不可以查看Log：<br/>
-![](images/IncorrectLog.PNG)
+![](images/IncorrectLog.png)
 <br/>
 可以查看本地Git的记录
 
