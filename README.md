@@ -10,22 +10,30 @@ GitHub是一个面向开源及私有软件项目的托管平台，因为只支�
 
 这里会试着分享一些自己学习和使用Git/Github/Gitee的一些经验！
 
-## 项目目录
-- books： 收集到的相关书籍资料
-- exe： Git安装程序exe(Git在国内下载比较麻烦)
-- images： Git学习期间的一些图片/截图
+- [books](./books)： 收集到的相关书籍资料
+- [images](./images)： Git学习期间的一些图片/截图
 
-## Git与Github相连的基本配置
+## 连接并提交至Github
+
 [真小白入门之Github](https://blog.csdn.net/nmjuzi/article/details/82184818)
 
-## 提交到Github上的通常流程(个人简易版)
 ### 命令行提交
-1. `git add .`
-2. `git commit -m "注释"`
-3. `git push -u origin master`
 
-(严格讲，在push之前应该pull一下的：`git pull origin master`)
-### IDEA(PyCharm、CLion、WebStorm等类似)提交
+[Git提交代码到GitHub的基本操作流程](https://blankspace.blog.csdn.net/article/details/104073562)
+
+执行命令：
+1. `git add .`
+2. `git pull origin master`
+3. `git commit -m "注释"`
+4. `git push -u origin master`
+
+### JetBrains工具提交
+
+[IDEA项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/105802880)
+
+[PyCharm项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/106093626)
+
+操作流程：
 1. VCS → Import into Version Control → Create Git Repository...
 2. 选定项目目录点右键 → Git
     1. Repository → Remotes... → + → 添加URL → ...
@@ -33,25 +41,52 @@ GitHub是一个面向开源及私有软件项目的托管平台，因为只支�
     2. Commit → Commit Message内容 → Commit按钮
     3. Repository → Push... → Push按钮
 
-## Windows本地看不到.git
-`.git`文件夹是隐藏文件夹，必须设置一下查看隐含文件夹才能看得到！
+## 常见基础问题
 
-## DownloadZip和clone到的项目有何不同
-据我所知，区别主要就是zip不含.git；而clone到的有.git。
+### Windows本地看不到.git
 
-## 解决本地历史和远端仓库历史不一致的方案
+`.git`文件夹是隐藏文件夹，必须设置一下查看隐含文件夹才能看得到。
+
+### DownloadZip和Clone的区别
+
+1. DownloadZip通过浏览器下载zip压缩包，而clone通过GitBash下载
+2. DownloadZip获得的源码不含.git，而clone下来的含.git
+
+### Windows创建.gitignore文件
+
+Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命名为`.gitignore.`即可解决问题。
+
+## 解决本地历史和远端仓库历史不一致
+
 通常，比如我们新建一个Github的Repository(带README.md)，本地直接提交就会被`rejected`……<br/>
 这种情况其实也蛮常见的，这就是我上面写到的“暴力提交三步走”的弊端——没考虑本地Git和远端Github的兼容。<br/>
 此时，`git pull origin master --allow-unrelated-histories`命令就显得很香，可以解决此问题，基本屡试不爽！
 
-## 修改Repository语言类型
-我们可能会遇到一个非常恶心的问题：Repository语言不是我们期待的……<br/>
-比如一个Vue/HTML项目，最后呈现出的是JavaScript；比如一个Java项目因为加了一些C工程代码而变成了CMake……<br/>
-此时需要添加.gitattributes文件：`\*.\* linguist-language=java`<br/>
-上面的写法比较暴力，但确实挺实用的……
+当然，也可以另外clone一份，人工操作重新提交和推送。
+
+## Git配置
+
+### 配置文件存放位置
+- `/etc/gitconfig`
+- `~/.gitconfig` or `~/.config/git/config`
+- `.git/config`
+
+### 查看所有的配置以及它们所在的文件
+
+`git config --list --show-origin`
+
+### 修改Repository语言类型
+
+[Git修改Repository语言类型](https://blankspace.blog.csdn.net/article/details/105982169)
+
+Repository语言可能不是我们期待的。比如一个Vue/HTML项目，最后呈现出的是JavaScript；比如一个Java项目因为加了一些CLion工程代码而变成了CMake……<br/>
+此时需要添加.gitattributes文件：`*.* linguist-language=java`<br/>
+
+以前用过这个方法，后来发现其实并不合适，非必要不会采纳这种配置方法。
 
 ## 查看提交日志
-`git log`这个命令我还是试过的，它能打印出你在这个Git目录下的commit记录。<br/>
+
+`git log`能打印出你在这个Git目录下的commit记录。<br/>
 如果是Git目录，则可以查看Log：<br/>
 ![](images/CorrectLog.png)
 <br/>
@@ -226,4 +261,3 @@ git push -f origin master
 Git提交Github报错：`RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errfno 10054`
 
 输入`git config http.sslVerify "false"`即可。
-
