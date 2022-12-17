@@ -2,20 +2,33 @@
 
 Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用广泛。
 
-![](images/git.png)
+[![](images/git.png)](https://git-scm.com/book/zh/v2)
 
 GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。
 
-![](images/Github.png)
+[![](images/github.png)](https://github.com)
 
-这里会试着分享一些自己学习和使用Git/Github/Gitee的一些经验！
+## GitHub入门
 
-- [books](./books)： 收集到的相关书籍资料
-- [images](./images)： Git学习期间的一些图片/截图
+- [What is GitHub?](https://www.youtube.com/watch?v=w3jLJU7DT5E)
+- [GitHub Docs](https://docs.github.com/zh/get-started)
 
-## 连接并提交至Github
+GitHub基本概念：
+- `Repository`：代码仓库
+- `Issue`：其他人提出的问题(bug或改进意见)
+- `Star`：获得其他人的点赞
+- `Fork`：原项目的分支
+- `Pull Request`：代码合并请求
+- `Watch`：接收代码变更提醒
+- `Gist`：代码片段
 
 [真小白入门之Github](https://blog.csdn.net/nmjuzi/article/details/82184818)
+
+GitHub必备知识
+- Markdown
+    - [Markdown Guide](https://www.markdownguide.org)
+    - [markdown-syntax](https://github.com/cdoco/markdown-syntax)`
+- [Git](https://git-scm.com/book/zh/v2)
 
 ### 命令行提交
 
@@ -29,9 +42,9 @@ GitHub是一个面向开源及私有软件项目的托管平台，因为只支�
 
 ### JetBrains工具提交
 
-[IDEA项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/105802880)
-
-[PyCharm项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/106093626)
+解决方案：
+- [IDEA项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/105802880)
+- [PyCharm项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/106093626)
 
 操作流程：
 1. VCS → Import into Version Control → Create Git Repository...
@@ -67,13 +80,26 @@ Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命�
 ## Git配置
 
 ### 配置文件存放位置
+
 - `/etc/gitconfig`
-- `~/.gitconfig` or `~/.config/git/config`
+- `~/.gitconfig` 或 `~/.config/git/config`
 - `.git/config`
 
-### 查看所有的配置以及它们所在的文件
+### 添加修改配置信息
 
-`git config --list --show-origin`
+- 配置用户名：`git config --global user.name <username>`
+- 配置邮箱：`git config --global user.email <your_email_address>`
+- 配置http代理：`git config --global http.proxy http://127.0.0.1:7079`
+- 配置https代理：`git config --global https.proxy https://127.0.0.1:7079`
+
+### 查看配置
+
+- 查看所有的配置以及它们所在的文件：`git config --list --show-origin`
+
+### 取消配置
+
+- `git config --global --unset http.proxy`
+- `git config --global --unset https.proxy`
 
 ### 修改Repository语言类型
 
@@ -84,16 +110,16 @@ Repository语言可能不是我们期待的。比如一个Vue/HTML项目，最�
 
 以前用过这个方法，后来发现其实并不合适，非必要不会采纳这种配置方法。
 
+## 获取Git仓库
+
+- 新建Git目录：`git init`
+- 克隆Git目录：`git clone <url>`
+
 ## 查看提交日志
 
-`git log`能打印出你在这个Git目录下的commit记录。<br/>
-如果是Git目录，则可以查看Log：<br/>
-![](images/CorrectLog.png)
-<br/>
-如果不是Git目录，则不可以查看Log：<br/>
-![](images/IncorrectLog.png)
-<br/>
-可以查看本地Git的记录
+`git log`能打印出你在这个Git目录下的commit记录。
+
+如果是Git目录，则可以查看Log；如果不是Git目录，则不可以查看Log。
 
 ## 查看状态
 查看当前仓库的状态可以用`git status`这个命令，有时候不知道进行到哪一步的话这个命令挺有用的。<br/>
