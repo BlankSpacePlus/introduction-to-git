@@ -1,17 +1,28 @@
 # Git和Github学习记录
 
-Git是Linux发明者Linus开发的一款新时代的版本控制系统，应用广泛。
+[Git](https://git-scm.com/downloads)是Linux发明者Linus开发的一款新时代的版本控制系统，应用广泛。
 
 [![](images/git.png)](https://git-scm.com/book/zh/v2)
 
-GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。
+GitHub是一个面向[开源](https://opensource.guide)及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。
 
 [![](images/git-github.png)](https://github.com)
 
 ## GitHub入门
 
+参考资料：
 - [What is GitHub?](https://www.youtube.com/watch?v=w3jLJU7DT5E)
+- [GitHub Courses](https://skills.github.com)
 - [GitHub Docs](https://docs.github.com/zh/get-started)
+- [GitHub Discussions](https://github.com/orgs/community/discussions)
+- [真小白入门之Github](https://blog.csdn.net/nmjuzi/article/details/82184818)
+- [GitHub Training Kit](https://training.github.com)
+- [GitHub Cheat Sheet](https://training.github.com/downloads/zh_CN/github-git-cheat-sheet/)
+
+### GitHub常见术语
+
+- [Git术语表](https://mirrors.edge.kernel.org/pub/software/scm/git/docs/gitglossary.html)
+- [GitHub术语表](https://docs.github.com/zh/get-started/quickstart/github-glossary)
 
 GitHub基本概念：
 - `Repository`：代码仓库
@@ -22,13 +33,33 @@ GitHub基本概念：
 - `Watch`：接收代码变更提醒
 - `Gist`：代码片段
 
-[真小白入门之Github](https://blog.csdn.net/nmjuzi/article/details/82184818)
-
 GitHub必备知识
 - Markdown
     - [Markdown Guide](https://www.markdownguide.org)
-    - [markdown-syntax](https://github.com/cdoco/markdown-syntax)`
-- [Git](https://git-scm.com/book/zh/v2)
+    - [markdown-syntax](https://github.com/cdoco/markdown-syntax)
+- Git
+    - [Pro Git 英文版](https://git-scm.com/book/en/v2)
+    - [Pro Git 中文版](https://git-scm.com/book/zh/v2)
+- LICENSE
+    - [Open Source LICENSE](https://opensource.org/licenses)
+    - [Choose a LICENSE](https://choosealicense.com)
+
+### GitHub工具
+
+- GitHub CLI
+    - [GitHub CLI Source Code](https://github.com/cli/cli)
+    - [GitHub CLI Command Manual](https://cli.github.com/manual/)
+- GitHub Destop
+    - [GitHub Destop Download](https://desktop.github.com)
+
+### GitHub操作
+
+- [创建Repository](https://docs.github.com/zh/get-started/quickstart/create-a-repo)
+    - 说明：个人不建议直接创建README.md、.gitignore等文件，建议自行创建后本地commit
+- [Fork已有Repository](https://docs.github.com/zh/get-started/quickstart/fork-a-repo)
+- [参与开源项目贡献](https://docs.github.com/zh/get-started/quickstart/contributing-to-projects)
+- [GitHub社交活动](https://docs.github.com/zh/get-started/quickstart/be-social)
+    - [GitHub同名项目实现丰富多彩的README.md](https://blankspace.blog.csdn.net/article/details/122807529)
 
 ### 命令行提交
 
@@ -54,7 +85,7 @@ GitHub必备知识
     2. Commit → Commit Message内容 → Commit按钮
     3. Repository → Push... → Push按钮
 
-## 常见基础问题
+## Git常见基础问题
 
 ### Windows本地看不到.git
 
@@ -67,7 +98,7 @@ GitHub必备知识
 
 ### Windows创建.gitignore文件
 
-Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命名为`.gitignore.`即可解决问题。
+Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命名为`.gitignore.`即可解决问题。GitHub给出了部分[`.gitignore模板`](https://github.com/github/gitignore)
 
 ## 解决本地历史和远端仓库历史不一致
 
@@ -91,29 +122,40 @@ Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命�
 - 配置邮箱：`git config --global user.email <your_email_address>`
 - 配置http代理：`git config --global http.proxy http://127.0.0.1:7079`
 - 配置https代理：`git config --global https.proxy https://127.0.0.1:7079`
+- 配置远程存储库URL：`git remote add origin <repo_url>`
 
 ### 查看配置
 
 - 查看所有的配置以及它们所在的文件：`git config --list --show-origin`
+- 查看远程存储库URL：`git remote -v`
 
 ### 取消配置
 
-- `git config --global --unset http.proxy`
-- `git config --global --unset https.proxy`
+- 取消配置http代理：`git config --global --unset http.proxy`
+- 取消配置https代理：`git config --global --unset https.proxy`
 
-### 修改Repository语言类型
+### 配置文件
 
-[Git修改Repository语言类型](https://blankspace.blog.csdn.net/article/details/105982169)
+[Git文件.gitignore、.gitattributes、.gitkeep用法解析](https://juejin.cn/post/7081941648401235976)
 
-Repository语言可能不是我们期待的。比如一个Vue/HTML项目，最后呈现出的是JavaScript；比如一个Java项目因为加了一些CLion工程代码而变成了CMake……<br/>
-此时需要添加.gitattributes文件：`*.* linguist-language=java`<br/>
+## Git获取帮助
 
-以前用过这个方法，后来发现其实并不合适，非必要不会采纳这种配置方法。
+- 命令行帮助
+    - `git help <verb>`
+    - `git <verb> --help`
+    - `man git-<verb>`：UNIX/Linux环境
+    - `git <verb> -h`：查阅简单说明
+- 查阅官方文档
+    - [Pro Git 英文版](https://git-scm.com/book/en/v2)
+    - [Pro Git 中文版](https://git-scm.com/book/zh/v2)
 
-## 获取Git仓库
+## Git获取仓库
 
 - 新建Git目录：`git init`
 - 克隆Git目录：`git clone <url>`
+
+
+
 
 ## 查看提交日志
 
