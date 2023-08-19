@@ -1,14 +1,109 @@
-# Git和Github学习记录
+# Git
 
 [Git](https://git-scm.com/downloads)是Linux发明者Linus开发的一款新时代的版本控制系统，应用广泛。
 
-[![](images/git.png)](https://git-scm.com/book/zh/v2)
+[![](images/1.png)](https://git-scm.com/book/zh/v2)
+
+[Git的下载与安装](https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git)
+
+## Git与版本控制
+
+版本控制是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。
+
+版本控制系统可以分为：
+- 本地版本控制系统
+- 集中化版本控制系统(CVCS)
+- 分布式版本控制系统(DVCS)
+
+Git与其他版本控制系统的区别在于：
+- Git直接记录文件快照，而非文件差异比较。<br>![](images/2.png)<br>![](images/3.png)
+- 绝大多数Git操作都只需要访问本地文件和资源，一般不需要来自网络上其它计算机的信息。
+- Git中所有的数据在存储前都用SHA-1散列机制计算校验和，然后以校验和来引用。
+- Git一般只添加数据，几乎不会执行任何可能导致文件不可恢复的操作。
+
+## Git项目结构
+
+Git项目主要分为：
+- 工作区：工作区是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
+- 暂存区：暂存区是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中，其本质是一个索引。
+- Git仓库：.git目录是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。
+
+## Git文件状态
+
+Git文件的状态主要分为：
+- 未追踪(untracked)：基于最近一次commit未修改文件的一种初始态。
+- 未修改(unmodified)：基于最近一次commit已有文件改动，但未通过add子命令track这些改动。
+- 已修改(modified)：基于最近一次commit已有文件改动，改动已经track但还没保存到数据库中。
+- 已暂存(staged)：对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
+- 已提交(committed)：文件修改数据已经安全地保存在本地数据库中，完成commit。
+
+查看Git状态：
+```shell
+git status
+```
+
+查看Git状态（简单版）：
+```shell
+git status -s
+```
+
+[![](./images/4.png)](https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93)
+
+## Git本地工作流
+
+基本的Git本地工作流如下：
+1. 在工作区中修改文件。
+2. 将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。
+3. 提交更新，找到暂存区的文件，将快照永久性存储到Git目录。
+
+## Git操作途径
+
+- 终端
+- GUI
+- IDE工具（其实也算GUI）
+
+## Git配置
+
+### 配置文件存放位置
+
+- `/etc/gitconfig`
+- `~/.gitconfig` 或 `~/.config/git/config`
+- `.git/config`
+
+### 添加修改配置信息
+
+- 配置用户名：`git config --global user.name <username>`
+- 配置邮箱：`git config --global user.email <your_email_address>`
+- 配置http代理：`git config --global http.proxy http://127.0.0.1:7079`
+- 配置https代理：`git config --global https.proxy https://127.0.0.1:7079`
+- 配置远程存储库URL：`git remote add origin <repo_url>`
+
+### 查看配置
+
+- 查看所有的配置以及它们所在的文件：`git config --list --show-origin`
+- 查看用户名：`git config user.name`
+- 查看远程存储库URL：`git remote -v`
+
+### 取消配置
+
+- 取消配置http代理：`git config --global --unset http.proxy`
+- 取消配置https代理：`git config --global --unset https.proxy`
+
+### 配置文件
+
+[Git文件.gitignore、.gitattributes、.gitkeep用法解析](https://juejin.cn/post/7081941648401235976)
+
+## Git仓库创建
+
+通常有两种获取Git项目仓库的方式：
+1. 将尚未进行版本控制的本地目录转换为Git仓库：`git init`
+2. 从其它服务器克隆一个已存在的Git仓库：`git clone <git_url>`
+
+# GitHub
 
 GitHub是一个面向[开源](https://opensource.guide)及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。
 
 [![](images/git-github.png)](https://github.com)
-
-## GitHub入门
 
 参考资料：
 - [What is GitHub?](https://www.youtube.com/watch?v=w3jLJU7DT5E)
@@ -19,7 +114,7 @@ GitHub是一个面向[开源](https://opensource.guide)及私有软件项目的�
 - [GitHub Training Kit](https://training.github.com)
 - [GitHub Cheat Sheet](https://training.github.com/downloads/zh_CN/github-git-cheat-sheet/)
 
-### GitHub常见术语
+## GitHub常见术语
 
 - [Git术语表](https://mirrors.edge.kernel.org/pub/software/scm/git/docs/gitglossary.html)
 - [GitHub术语表](https://docs.github.com/zh/get-started/quickstart/github-glossary)
@@ -44,7 +139,7 @@ GitHub必备知识
     - [Open Source LICENSE](https://opensource.org/licenses)
     - [Choose a LICENSE](https://choosealicense.com)
 
-### GitHub工具
+## GitHub工具
 
 - GitHub CLI
     - [GitHub CLI Source Code](https://github.com/cli/cli)
@@ -52,7 +147,7 @@ GitHub必备知识
 - GitHub Destop
     - [GitHub Destop Download](https://desktop.github.com)
 
-### GitHub操作
+## GitHub操作
 
 - [创建Repository](https://docs.github.com/zh/get-started/quickstart/create-a-repo)
     - 说明：个人不建议直接创建README.md、.gitignore等文件，建议自行创建后本地commit
@@ -60,6 +155,8 @@ GitHub必备知识
 - [参与开源项目贡献](https://docs.github.com/zh/get-started/quickstart/contributing-to-projects)
 - [GitHub社交活动](https://docs.github.com/zh/get-started/quickstart/be-social)
     - [GitHub同名项目实现丰富多彩的README.md](https://blankspace.blog.csdn.net/article/details/122807529)
+
+## GitHub提交
 
 ### 命令行提交
 
@@ -85,7 +182,7 @@ GitHub必备知识
     2. Commit → Commit Message内容 → Commit按钮
     3. Repository → Push... → Push按钮
 
-## Git常见基础问题
+# Git常见基础问题
 
 ### Windows本地看不到.git
 
@@ -108,36 +205,6 @@ Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命�
 
 当然，也可以另外clone一份，人工操作重新提交和推送。
 
-## Git配置
-
-### 配置文件存放位置
-
-- `/etc/gitconfig`
-- `~/.gitconfig` 或 `~/.config/git/config`
-- `.git/config`
-
-### 添加修改配置信息
-
-- 配置用户名：`git config --global user.name <username>`
-- 配置邮箱：`git config --global user.email <your_email_address>`
-- 配置http代理：`git config --global http.proxy http://127.0.0.1:7079`
-- 配置https代理：`git config --global https.proxy https://127.0.0.1:7079`
-- 配置远程存储库URL：`git remote add origin <repo_url>`
-
-### 查看配置
-
-- 查看所有的配置以及它们所在的文件：`git config --list --show-origin`
-- 查看远程存储库URL：`git remote -v`
-
-### 取消配置
-
-- 取消配置http代理：`git config --global --unset http.proxy`
-- 取消配置https代理：`git config --global --unset https.proxy`
-
-### 配置文件
-
-[Git文件.gitignore、.gitattributes、.gitkeep用法解析](https://juejin.cn/post/7081941648401235976)
-
 ## Git获取帮助
 
 - 命令行帮助
@@ -153,9 +220,6 @@ Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命�
 
 - 新建Git目录：`git init`
 - 克隆Git目录：`git clone <url>`
-
-
-
 
 ## 查看提交日志
 
@@ -309,10 +373,6 @@ git diff --staged # 比较暂存区和版本库差异
 我们在开发的过程中一般都会约定尽量大家写的代码不要彼此影响，以减少出现冲突的可能，但是冲突总归无法避免的，我们需要了解并掌握解决冲突的方法。<br/>
 冲突的地方由`====`分出了上下两个部分，上部分一个叫HEAD的字样代表是当前所在分支的代码，下半部分是另一个分支的代码。<br/>
 对比很明显，所以我们很容易判断哪些代码该保留，哪些代码该删除。我们只需要移除掉那些老旧代码，而且同时也要把那些`\<\<\<HEAD`、`====`以及`\>\>\>\>\>\>`这些标记符号也一并删除，最后进行一次commit就ok了。
-
-## 新Repository的README.md
-Github、Gitee这些仓库在New一个Repository时都会有新建README.md的选项，而README.md一般是不能缺的，所以开始的时候我都会直接顺手创建。<br/>
-但是后来就出现了很多很多的麻烦，所以现在个人不建议直接创建README.md这东西，本地自己创一个文件写好内容直接push就行。
 
 ## 从Github撤销一次提交
 ```text
