@@ -37,6 +37,8 @@ Git文件的状态主要分为：
 - 已暂存(staged)：对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
 - 已提交(committed)：文件修改数据已经安全地保存在本地数据库中，完成commit。
 
+[![](./images/4.png)](https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93)
+
 查看Git状态：
 ```shell
 git status
@@ -46,8 +48,12 @@ git status
 ```shell
 git status -s
 ```
-
-[![](./images/4.png)](https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93)
+输出的结果中，文件前的标记中有两栏，左栏指明了暂存区的状态，右栏指明了工作区的状态：
+- `??`：新添加的未跟踪文件。
+- `A `：新添加到暂存区中的文件。
+- `M `：修改过的文件。
+- ` M`：已修改但尚未暂存的文件。
+- `MM`：已修改且已暂存。
 
 ## Git本地工作流
 
@@ -61,6 +67,17 @@ git status -s
 - 终端
 - GUI
 - IDE工具（其实也算GUI）
+
+## Git获取帮助
+
+- 命令行帮助
+    - `git help <verb>`
+    - `git <verb> --help`
+    - `man git-<verb>`：UNIX/Linux环境
+    - `git <verb> -h`：查阅简单说明
+- 查阅官方文档
+    - [Pro Git 英文版](https://git-scm.com/book/en/v2)
+    - [Pro Git 中文版](https://git-scm.com/book/zh/v2)
 
 ## Git配置
 
@@ -77,10 +94,13 @@ git status -s
 - 配置http代理：`git config --global http.proxy http://127.0.0.1:7079`
 - 配置https代理：`git config --global https.proxy https://127.0.0.1:7079`
 - 配置远程存储库URL：`git remote add origin <repo_url>`
+- 配置文本编辑器使用Vim：`git config --global core.editor "vim"`
+- 配置开启终端的各种颜色：`git config --global color.ui true`
+- 配置显示中文文件名：`git config --global core.quotepath false`
 
 ### 查看配置
 
-- 查看所有的配置以及它们所在的文件：`git config --list --show-origin`
+- 查看所有的配置以及它们所在的文件：`git config --list --show-origin` / `git config -l`
 - 查看用户名：`git config user.name`
 - 查看远程存储库URL：`git remote -v`
 
@@ -93,11 +113,258 @@ git status -s
 
 [Git文件.gitignore、.gitattributes、.gitkeep用法解析](https://juejin.cn/post/7081941648401235976)
 
+文件.gitignore的格式规范如下：
+- 所有空行或者以`#`开头的行都会被Git忽略。
+- 可以使用标准的glob模式匹配，它会递归地应用在整个工作区中。
+- 匹配模式可以以`/`开头防止递归。
+- 匹配模式可以以`/`结尾指定目录。
+- 要忽略指定模式以外的文件或目录，可以在模式前加上叹号`!`取反。
+
+常见.gitignore配置模板：[github/gitignore](https://github.com/github/gitignore)
+
 ## Git仓库创建
 
 通常有两种获取Git项目仓库的方式：
 1. 将尚未进行版本控制的本地目录转换为Git仓库：`git init`
 2. 从其它服务器克隆一个已存在的Git仓库：`git clone <git_url>`
+
+## Git文件对比
+
+对比文件版本改动需要使用`git diff`命令。
+
+查看尚未暂存的文件更新了哪些部分：
+```shell
+git diff
+```
+
+其中：
+- 查到的改动如果是 **红色的"-"** 则代表删除的内容。
+- 查到的改动如果是 **绿色的"+"** 则代表增加的内容。
+
+对比已暂存文件与最后一次提交的文件差异：
+```shell
+git diff --staged
+git diff --cached
+```
+
+对比两次提交之间的差异：
+```shell
+git diff <$id1> <$id2>
+```
+
+对比两个分支之间的差异：
+```shell
+git diff <branch1>..<branch2>
+```
+
+调用emerge或vimdiff等软件输出`git diff`的分析结果：
+```shell
+git difftool
+```
+
+查看当前系统支持哪些`git diff`插件：
+```shell
+git difftool --tool-help
+```
+
+## Git提交代码
+
+暂存文件：
+```shell
+git add <file_list...>
+```
+
+取消暂存文件（保留改动）：
+```shell
+git reset HEAD <file_list...>
+```
+
+取消暂存文件（不保留改动，还原为上一个commit版本）：
+```shell
+git checkout -- <file_list...>
+```
+
+提交文件更新：
+```shell
+git commit -m ""
+```
+
+直接把所有已经跟踪过的文件暂存起来一并提交：
+```shell
+git commit -a -m ""
+```
+
+从已跟踪文件清单中移除文件，并连带从工作目录中删除指定的文件：
+```shell
+git rm <file_list...>
+```
+
+从已跟踪文件清单中移除文件，但不连带从工作目录中删除指定的文件：
+```shell
+git rm --cached <file_list...>
+```
+
+重命名或移动已跟踪文件：
+```shell
+git mv <source_file> <target_file>
+```
+
+`git mv`命令的本质是三步走：
+```shell
+mv <source_file> <target_file>
+git rm <source_file>
+git add <target_file>
+```
+
+修补上次提交（本质是用一个新的commit替换旧的commit，稍微改进最后一次commit，避免无意义提交信息弄乱仓库历史）：
+```shell
+git commit -m ""
+git add <file_list...>
+git commit --amend
+```
+
+## Git提交历史
+
+在不传入任何参数的默认情况下，`git log`会按时间先后顺序列出当前Git目录下的所有commit，最近的更新排在最上面。随之列出的详细信息包括：每次commit的SHA-1校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
+
+```shell
+git log
+```
+
+| 常用选项 | 说明 |
+|:----:|:----:|
+| `-p` | 按补丁格式显示每个提交引入的差异。 |
+| `--stat` | 显示每次提交的文件修改统计信息。 |
+| `--shortstat` | 只显示`--stat`中最后的行数修改添加移除统计。 |
+| `--name-only` | 仅在提交信息后显示已修改的文件清单。 |
+| `--name-status` | 显示新增、修改、删除的文件清单。 |
+| `--abbrev-commit` | 仅显示SHA-1校验和所有40个字符中的前几个字符。 |
+| `--relative-date` | 使用较短的相对时间而不是完整格式显示日期，例如`2 weeks ago`。 |
+| `--graph` | 在日志旁以ASCII图形显示分支与合并历史。 |
+| `--pretty` | 使用其他格式显示历史提交信息。可用的选项包括oneline、short、full、fuller、format（用来定义自己的格式）。 |
+| `--oneline` | `--pretty=oneline --abbrev-commit`合用的简写。 |
+
+查看每次提交所引入的差异（可用于进行代码审查或者快速浏览某个搭档的提交所带来的变化时）：
+```shell
+git log -p
+```
+
+查看每次提交所引入的差异（最近两次commit）：
+```shell
+git log -p -2
+```
+
+查看每次提交的简略统计信息：
+```shell
+git log --stat
+```
+
+`git log --pretty`的常见取值：
+- oneline
+- short
+- full
+- fuller
+- format
+
+```shell
+git log --pretty=format:"%h - %an, %ar : %s"
+```
+
+| 格式选项 | 说明 |
+|:----:|:----:|
+| `%H` | 提交的完整哈希值 |
+| `%h` | 提交的简写哈希值 |
+| `%T` | 树的完整哈希值 |
+| `%t` | 树的简写哈希值 |
+| `%P` | 父提交的完整哈希值 |
+| `%p` | 父提交的简写哈希值 |
+| `%an` | 作者名字 |
+| `%ae` | 作者的电子邮件地址 |
+| `%ad` | 作者修订日期（可以用 --date=选项 来定制格式） |
+| `%ar` | 作者修订日期，按多久以前的方式显示 |
+| `%cn` | 提交者的名字 |
+| `%ce` | 提交者的电子邮件地址 |
+| `%cd` | 提交日期 |
+| `%cr` | 提交日期（距今多长时间） |
+| `%s` | 提交说明 |
+
+列出最近两周的所有提交：
+```shell
+git log --since=2.weeks
+```
+
+| 限制选项 | 说明 | 
+|:----:|:----:|
+| `-<n>` | 仅显示最近的n条提交。 |
+| `--since`、`--after` | 仅显示指定时间之后的提交。 |
+| `--until`、`--before` | 仅显示指定时间之前的提交。 |
+| `--author` | 仅显示作者匹配指定字符串的提交。 |
+| `--committer` | 仅显示提交者匹配指定字符串的提交。 |
+| `--grep` | 仅显示提交说明中包含指定字符串的提交。 |
+| `-S` | 仅显示添加或删除内容匹配指定字符串的提交。 |
+
+## Git远程仓库
+
+从远程仓库克隆到本地：
+```shell
+git clone <git_url>
+```
+
+查看远程仓库名称（默认名字是`origin`）：
+```shell
+git remote
+```
+
+更改远程仓库名称：
+```shell
+git remote rename <remote_name_source> <remote_name_target>
+```
+
+查看已经配置的远程仓库：
+```shell
+git remote -v
+```
+
+- 如果没有远程仓库，则不会有输出。
+- 如果有单一远程仓库，则显示如下内容：
+    ```text
+    origin https://github.com/<username>/<repository_name> (fetch)
+    origin https://github.com/<username>/<repository_name> (push)
+    ```
+
+添加远程仓库：
+```shell
+git remote add <remote_name> <repo_url>
+```
+
+查看远程仓库详细信息：
+```shell
+git remote show <remote_name>
+```
+
+移除远程仓库配置：
+```shell
+git remote remove <remote_name>
+```
+
+从远程仓库拉取：
+```shell
+git fetch <remote_name>
+```
+
+从远程仓库抓取数据并自动尝试合并到当前所在的分支：
+```shell
+git pull
+```
+
+推送到远程仓库：
+```shell
+git push <remote_name> <branch_name>
+```
+
+## Git数据恢复
+
+ Git中任何已提交的东西几乎总是可以恢复的，甚至于那些被删除的分支中的提交或使用`--amend`选项覆盖的commit也可以恢复。然而，任何未提交的修改记录一旦丢失就很可能无法恢复。
 
 # GitHub
 
@@ -128,7 +395,7 @@ GitHub基本概念：
 - `Watch`：接收代码变更提醒
 - `Gist`：代码片段
 
-GitHub必备知识
+GitHub必备知识：
 - Markdown
     - [Markdown Guide](https://www.markdownguide.org)
     - [markdown-syntax](https://github.com/cdoco/markdown-syntax)
@@ -156,9 +423,9 @@ GitHub必备知识
 - [GitHub社交活动](https://docs.github.com/zh/get-started/quickstart/be-social)
     - [GitHub同名项目实现丰富多彩的README.md](https://blankspace.blog.csdn.net/article/details/122807529)
 
-## GitHub提交
+## GitHub同步
 
-### 命令行提交
+### 命令行push
 
 [Git提交代码到GitHub的基本操作流程](https://blankspace.blog.csdn.net/article/details/104073562)
 
@@ -168,7 +435,7 @@ GitHub必备知识
 3. `git commit -m "注释"`
 4. `git push -u origin master`
 
-### JetBrains工具提交
+### JetBrains工具push
 
 解决方案：
 - [IDEA项目关联Git的解决方案](https://blankspace.blog.csdn.net/article/details/105802880)
@@ -204,32 +471,6 @@ Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命�
 此时，`git pull origin master --allow-unrelated-histories`命令就显得很香，可以解决此问题，基本屡试不爽！
 
 当然，也可以另外clone一份，人工操作重新提交和推送。
-
-## Git获取帮助
-
-- 命令行帮助
-    - `git help <verb>`
-    - `git <verb> --help`
-    - `man git-<verb>`：UNIX/Linux环境
-    - `git <verb> -h`：查阅简单说明
-- 查阅官方文档
-    - [Pro Git 英文版](https://git-scm.com/book/en/v2)
-    - [Pro Git 中文版](https://git-scm.com/book/zh/v2)
-
-## Git获取仓库
-
-- 新建Git目录：`git init`
-- 克隆Git目录：`git clone <url>`
-
-## 查看提交日志
-
-`git log`能打印出你在这个Git目录下的commit记录。
-
-如果是Git目录，则可以查看Log；如果不是Git目录，则不可以查看Log。
-
-## 查看状态
-查看当前仓库的状态可以用`git status`这个命令，有时候不知道进行到哪一步的话这个命令挺有用的。<br/>
-大家可以在提交的每一步进行后使用这个命令看一看仓库状态。
 
 ## 分支与合并
 说实话，直到写这部分，我还没怎么用过分支与合并，所有的项目基本都是自己来处理，那顺便学一下吧！<br/>
@@ -315,52 +556,10 @@ Date:   Mon Jul 27 18:36:08 2020 +0800
 
 ```
 
-## 查看当前项目所有的远程仓库
-```text
-git remote -v
-```
-如果没有远程仓库，则不会有输出。<br/>
-如果有单一远程仓库，则显示如下内容：
-```text
-origin https://github.com/username/repository_name (fetch)
-origin https://github.com/username/repository_name (push)
-```
-
-## 指定远程仓库的用户名和邮箱
-比较一劳永逸的做法是指定全局的默认用户名和邮箱：
-```text
-git config --global user.name "username"
-git config --global user.email "email_address"
-```
-我们也可以为专属的项目设置默认用户名和邮箱，只需去掉`--global`即可：
-```text
-git config user.name "username"
-git config user.email "email_address"
-```
-
-## 配置相关
-`git config -l`命令可查配置信息，这个配置文件的位置是Linux的`~/.gitconfig`
-
-一些比较经典的配置如下(配置用户名、邮箱这种上面提过了)：
-- `git config --global core.editor "vim" # 设置Editor使用vim`
-- `git config --global color.ui true # 开启终端的各种颜色`
-- `git config --global core.quotepath false #设置显示中文文件名`
-
 ## checkout再说明
 checkout两个主要功能：
 - 切换分支branch
 - 切换版本标签tag
-
-## 查看版本改动
-查看版本改动需要使用`git diff`命令：
-```text
-git diff <$id1> <$id2> # 比较两次提交之间的差异
-git diff <branch1>..<branch2> # 在两个分支之间比较
-git diff --staged # 比较暂存区和版本库差异
-```
-直接输入git diff只能比较当前文件和暂存区文件(仍未执行git add的文件)差异。<br/>
-- 查到的改动如果是 **红色的"-"** 则代表删除的内容。
-- 查到的改动如果是 **绿色的"+"** 则代表增加的内容。
 
 ## stash的使用
 `git stash`命令可以把当前分支所有没有commit的代码先暂存起来，此时使用`git status`查看仓库状态是很干净的。<br/>
