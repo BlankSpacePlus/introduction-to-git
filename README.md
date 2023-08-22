@@ -362,6 +362,95 @@ git pull
 git push <remote_name> <branch_name>
 ```
 
+## Git打标签
+
+查看所有标签：
+```shell
+git tag
+```
+
+查看1.1系列版本的所有标签：
+```shell
+git tag -l "v1.1*"
+git tag --list "v1.1*"
+```
+
+删除标签：
+```shell
+git tag -d <tag_version>
+```
+
+查看某个标签所指向的文件版本（会导致一系列问题）：
+```shell
+git checkout <tag_version>
+```
+
+### Git打轻量标签
+
+轻量标签本质上是将提交校验和存储到一个文件中——没有保存任何其他信息。
+
+创建轻量标签，不需要使用`-a`、`-s`或`-m`选项，只需要提供标签名字。
+
+```shell
+git tag <tag_version>
+```
+
+查看轻量标签信息（只有commit信息，没有额外信息）：
+```shell
+git show <tag_version>
+```
+
+### Git打附注标签
+
+附注标签是存储在Git数据库中的一个完整对象， 它们是可以被校验的，其中包含打标签者的名字、电子邮件地址、日期时间， 此外还有一个标签信息，并且可以使用 GNU Privacy Guard (GPG) 签名并验证。 
+
+```shell
+git tag -a <tag_version> -m ""
+```
+
+查看附注标签信息：
+```shell
+git show <tag_version>
+```
+
+为历史commit打标签：
+```shell
+git tag -a <tag_version> <校验和数值>
+```
+
+### Git推送标签
+
+Git默认不会将标签push到服务器上。
+
+```shell
+git push <remote_name> <tag_version>
+```
+
+把所有不在远程仓库服务器上的标签全部传送过去：
+```shell
+git push <remote_name> --tags
+```
+
+Git默认不会从远程服务器上删除标签：
+```shell
+git push <remote_name> :refs/tags/<tag_version>
+```
+或者
+```shell
+git push origin --delete <tag_version>
+```
+
+## Git设置别名
+
+如果不想每次都输入完整的Git命令，可以通过`git config`为任意命令设置一个别名。
+
+```shell
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+```
+
 ## Git数据恢复
 
  Git中任何已提交的东西几乎总是可以恢复的，甚至于那些被删除的分支中的提交或使用`--amend`选项覆盖的commit也可以恢复。然而，任何未提交的修改记录一旦丢失就很可能无法恢复。
@@ -502,59 +591,6 @@ Already up to date.
 删除分支要分情况：
 - 分支与主干是同步的(如分支建错、已提交同步等)需要删除：`git branch -d a_test`
 - 分支与主干是不同步的但需要强行删除：`git branch -D b_test`
-
-## 给代码打上版本Tag
-我们给初代版本打上Tag，表示版本为V1.0：`git tag v1.0`。
-随着修改，我们提交后给新版本打上V1.1的Tag：`git tag v1.1`
-如若需要回溯到V1.0版本，需使用命令`git checkout v1.0`：
-```text
-git checkout v1.0
-Note: switching to 'v1.0'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
-
-  git switch -c <new-branch-name>
-
-Or undo this operation with:
-
-  git switch -
-
-Turn off this advice by setting config variable advice.detachedHead to false
-
-HEAD is now at 025ee41 测试
-
-```
-我们查看log，没有V1.1的log：
-```text
-git log
-commit ......... (HEAD, tag: v1.0)
-Author: ... <...@users.noreply.github.com>
-Date:   Mon Jul 27 18:36:08 2020 +0800
-
-    测试
-
-```
-然后我们返回至V1.1(`git checkout v1.1`)：
-```text
-git log
-commit ......... (HEAD, tag: v1.1, master)
-Author: ... <...@users.noreply.github.com>
-Date:   Mon Jul 27 18:36:38 2020 +0800
-
-    测试
-
-commit ......... (tag: v1.0)
-Author: ... <...@users.noreply.github.com>
-Date:   Mon Jul 27 18:36:08 2020 +0800
-
-    测试
-
-```
 
 ## checkout再说明
 checkout两个主要功能：
