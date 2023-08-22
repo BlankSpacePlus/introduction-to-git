@@ -1,4 +1,4 @@
-# Git
+# Git基础知识
 
 [Git](https://git-scm.com/downloads)是Linux发明者Linus开发的一款新时代的版本控制系统，应用广泛。
 
@@ -266,6 +266,11 @@ git log --stat
 - fuller
 - format
 
+查看提交历史、各个分支的指向以及项目的分支分叉情况：
+```shell
+git log --oneline --decorate --graph --all
+```
+
 ```shell
 git log --pretty=format:"%h - %an, %ar : %s"
 ```
@@ -315,6 +320,11 @@ git clone <git_url>
 git remote
 ```
 
+克隆时指定远程仓库名称：
+```shell
+git clone -o <remote_name> <repo_url>
+```
+
 更改远程仓库名称：
 ```shell
 git remote rename <remote_name_source> <remote_name_target>
@@ -354,7 +364,13 @@ git fetch <remote_name>
 
 从远程仓库抓取数据并自动尝试合并到当前所在的分支：
 ```shell
-git pull
+git pull <remote_name> <branch_name>
+```
+
+该命令等价于：
+```shell
+git fetch <remote_name>
+git merge <branch_name>
 ```
 
 推送到远程仓库：
@@ -455,11 +471,133 @@ git config --global alias.st status
 
  Git中任何已提交的东西几乎总是可以恢复的，甚至于那些被删除的分支中的提交或使用`--amend`选项覆盖的commit也可以恢复。然而，任何未提交的修改记录一旦丢失就很可能无法恢复。
 
-# GitHub
+## Git分支
+
+使用分支意味着开发者可以把自己的工作从开发主线上分离开来，以免影响开发主线。
+
+![](./images/5.png)
+
+Git分支的本质是指向提交对象的可变指针。
+
+Git默认的主分支是`master`，GitHub因某些原因改成`main`。Git用HEAD指针指向当前分支，默认的当前分支是主分支。
+
+查看所有分支（`*`所在分支为HEAD指向的当前分支）：
+```shell
+git branch
+```
+
+查看所有分支及其最后一次提交记录（`*`所在分支为HEAD指向的当前分支）：
+```shell
+git branch -v
+```
+
+查看所有已合并分支：
+```shell
+git branch --merged
+```
+
+查看所有未合并分支：
+```shell
+git branch --no-merged
+```
+
+查看所有的跟踪分支：
+```shell
+git branch -vv
+```
+
+创建新分支（当前分支不变）：
+```shell
+git branch <branch_name>
+```
+
+切换分支（分支切换会改变工作目录中的文件）：
+```shell
+git checkout <branch_name>
+```
+
+创建新分支（当前分支切换为新分支）：
+```shell
+git branch -b <branch_name>
+```
+
+此命令等价于：
+```shell
+git branch <branch_name>
+git checkout <branch_name>
+```
+
+删除分支（分支与主干是同步的，如果不同步无法删除）：
+```shell
+git branch -d <branch_name>
+```
+
+删除分支（分支与主干是不同步的，需要强行删除）：
+```shell
+git branch -D <branch_name>
+```
+
+## 分支合并
+
+将目标分支合入当前分支：
+```shell
+git merge <branch_name>
+```
+
+![](./images/6.png)
+
+分支合并遇到冲突时可以通过`git status`查看哪些文件遇到了冲突。
+
+```text
+<<<<<<< HEAD:<file_name>
+<head_info>
+=======
+<branch_info>
+>>>>>>> <branch_name>:<file_name>
+```
+
+`=======`的上半部分呈现出被合入分支的内容，`=======`的下半部分呈现出待合入分支的内容。
+
+命令行启动一个合适的可视化合并工具逐步解决冲突：
+```shell
+git mergetool
+```
+
+## 分支变基
+
+将当前分支合并到目标分支：
+```shell
+git rebase <target_branch_name> <source_branch_name>
+```
+
+等价于：
+```shell
+git checkout <source_branch_name>
+git rebase <target_branch_name>
+git checkout <target_branch_name>
+git merge <source_branch_name>
+```
+
+rebase原理是首先找到这两个分支（即当前分支、变基操作的目标基底分支） 的最近共同祖先C2，然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件， 然后将当前分支指向目标基底C3, 最后以此将之前另存为临时文件的修改依序应用。
+
+![](./images/7.png)
+
+![](./images/8.png)
+
+如此，可以确保在向远程分支推送时能保持提交历史的整洁。
+
+变基是将一系列提交按照原有次序依次应用到另一分支上，而合并是把最终结果合在一起。
+
+将在`branch_3`中但不在`branch_2`中的修改变基到`branch_1`中：
+```shell
+git rebase --onto <branch_1> <branch_2> <branch_3>
+```
+
+# GitHub基础知识
 
 GitHub是一个面向[开源](https://opensource.guide)及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。
 
-[![](images/git-github.png)](https://github.com)
+[![](./images/9.png)](https://github.com)
 
 参考资料：
 - [What is GitHub?](https://www.youtube.com/watch?v=w3jLJU7DT5E)
@@ -538,6 +676,13 @@ GitHub必备知识：
     2. Commit → Commit Message内容 → Commit按钮
     3. Repository → Push... → Push按钮
 
+### Github撤销提交
+
+```shell
+git reset --hard HEAD~
+git push -f origin master
+```
+
 # Git常见基础问题
 
 ### Windows本地看不到.git
@@ -553,74 +698,8 @@ GitHub必备知识：
 
 Windows创建`.gitignore`之类的文件可能报错，命名文件时直接命名为`.gitignore.`即可解决问题。GitHub给出了部分[`.gitignore模板`](https://github.com/github/gitignore)
 
-## 解决本地历史和远端仓库历史不一致
+### RPC失败问题
 
-通常，比如我们新建一个Github的Repository(带README.md)，本地直接提交就会被`rejected`……<br/>
-这种情况其实也蛮常见的，这就是我上面写到的“暴力提交三步走”的弊端——没考虑本地Git和远端Github的兼容。<br/>
-此时，`git pull origin master --allow-unrelated-histories`命令就显得很香，可以解决此问题，基本屡试不爽！
-
-当然，也可以另外clone一份，人工操作重新提交和推送。
-
-## 分支与合并
-说实话，直到写这部分，我还没怎么用过分支与合并，所有的项目基本都是自己来处理，那顺便学一下吧！<br/>
-本地做个测试即可，首先需要创建一个本地仓库，我新建一个`git_test`文件夹，在此目录下使用`git init`命令可使git_test文件夹含.git文件夹。<br/>
-注意此时新建项目的不能直接新建分支，否则会报错：`fatal: Not a valid object name: 'master'.`，也就是说必须先commit至少一次才行。<br/>
-先随便放一个文件进去，再依次输入`git add .`、`git commit -m "测试"`，完成初次提交。<br/>
-接下来新建分支`a_test`，命令为`git branch a_test`。<br/>
-使用命令`git branch`可查看分支情况：
-```text
-  a_test
-* master
-```
-`master`表示主干，`a_test`则是新建的分支，`\*`表示当前分支<br/>
-使用命令`git checkout a_test`即可切换到a_test分支目录下：
-```text
-* a_test
-  master
-```
-回到主分支，使用命令`git checkout -b b_test`可以新建b_test分支并切换过去：
-```text
-  a_test
-* b_test
-  master
-```
-接下来我们该测试合并分支了，切回master，使用命令`git merge a_test`，如果无冲突则直接合并成功：<br/>
-```text
-Already up to date.
-```
-删除分支要分情况：
-- 分支与主干是同步的(如分支建错、已提交同步等)需要删除：`git branch -d a_test`
-- 分支与主干是不同步的但需要强行删除：`git branch -D b_test`
-
-## checkout再说明
-checkout两个主要功能：
-- 切换分支branch
-- 切换版本标签tag
-
-## stash的使用
-`git stash`命令可以把当前分支所有没有commit的代码先暂存起来，此时使用`git status`查看仓库状态是很干净的。<br/>
-而输入`git stash list`可查到一条暂存记录。<br/>
-将暂存记录的还原到原分支中使用的命令是`git stash apply`，还原后使用命令`git stash drop`删掉这条暂存记录。<br/>
-`git stash pop`会帮我们还原+删除stash记录。<br/>
-另说，drop只删一条stash记录，而`git stash clear`删的是所有stash记录。
-
-## 分支冲突
-我们在开发的过程中一般都会约定尽量大家写的代码不要彼此影响，以减少出现冲突的可能，但是冲突总归无法避免的，我们需要了解并掌握解决冲突的方法。<br/>
-冲突的地方由`====`分出了上下两个部分，上部分一个叫HEAD的字样代表是当前所在分支的代码，下半部分是另一个分支的代码。<br/>
-对比很明显，所以我们很容易判断哪些代码该保留，哪些代码该删除。我们只需要移除掉那些老旧代码，而且同时也要把那些`\<\<\<HEAD`、`====`以及`\>\>\>\>\>\>`这些标记符号也一并删除，最后进行一次commit就ok了。
-
-## 从Github撤销一次提交
-```text
-git reset --hard HEAD~
-git push -f
-```
-
-## 强行push到远程仓库
-```shell
-git push -f origin master
-```
-
-## RPC failed
 Git提交Github报错：`RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errfno 10054`
 
 输入`git config http.sslVerify "false"`即可。
